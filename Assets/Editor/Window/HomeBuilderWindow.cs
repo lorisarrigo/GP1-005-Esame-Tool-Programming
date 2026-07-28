@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
-
+using System.Collections.Generic;
+using System.IO;
 public class HomeBuilderWindow : EditorWindow
 {
     [MenuItem("Tools/Home Builder")]
@@ -8,17 +9,76 @@ public class HomeBuilderWindow : EditorWindow
     {
         GetWindow<HomeBuilderWindow>("Home Builder Tool");
     }
+    private class CategoryData
+    {
+        public string Name;
+        public string[] prefabPath;
+        public string[] prefabName;
+        public GameObject[] prefabAsset;
+    }
     bool visibleArea = true;
     float areaSize = 20f;
-    private void OnEnable()
+    
+    //Btns
+    bool visibleRommsBtns = true;
+    
+    static readonly List<CategoryData> categories = new();
+    const string rootFolder = "Assets/Rooms Prefabs";
+
+    private static GameObject container;
+    private static GameObject selPrefab;
+    private static string selName;
+    private static Mesh previewMesh;
+    private static Material[] previewMat;
+    private static Vector3 previewPos;
+    private static Vector3 previewScale;
+
+    void OnEnable()
     {
-        SceneView.duringSceneGui += OnScenGUI;
+        ScanFolders();
+        SceneView.duringSceneGui += OnSnapArea;
+        SceneView.duringSceneGui += OnRoomsSelection;
     }
-    private void OnDisable()
+    void OnDisable()
     {
-        SceneView.duringSceneGui -= OnScenGUI;
+        SceneView.duringSceneGui -= OnSnapArea;
+        SceneView.duringSceneGui -= OnRoomsSelection;
     }
-    private void OnGUI()
+    static void ScanFolders()
+    {
+        categories.Clear();
+
+        if (!AssetDatabase.IsValidFolder(rootFolder)) return;
+
+        string fullRootPath = Path.GetFullPath(rootFolder);
+
+        string[] Dirs = Directory.GetDirectories(fullRootPath);
+
+        foreach (string dir in Dirs)
+        {
+            string folderName = Path.GetFileName(dir);
+            string assetFolderPath = rootFolder + "/" + folderName;
+            string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { assetFolderPath });
+            if (guids.Length == 0) continue;
+
+            var category = new CategoryData
+            {
+                Name = folderName,
+                prefabPath = new string[guids.Length],
+                prefabName = new string[guids.Length],
+                prefabAsset = new GameObject[guids.Length]
+            };
+
+            for (int i = 0; i<guids.Length; i++)
+            {
+                category.prefabPath[i] = AssetDatabase.GUIDToAssetPath(guids[i]);
+                category.prefabName[i] = Path.GetFileNameWithoutExtension(category.prefabPath[i]);
+                category.prefabAsset[i] = AssetDatabase.LoadAssetAtPath<GameObject>(category.prefabPath[i]);
+            }
+            categories.Add(category);
+        }
+    }
+    void OnGUI()
     {
         GUILayout.Space(10f);
 
@@ -78,16 +138,44 @@ public class HomeBuilderWindow : EditorWindow
 
         GUILayout.Space(5f);
 
-        if (GUILayout.Button("1 Door")) { }
-        
-        if (GUILayout.Button("2 Doors")) { }
+        EditorGUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("3 Doors")) { }
+        GUILayout.FlexibleSpace();
+
+        visibleRommsBtns = EditorGUILayout.Toggle("Visible Selection", visibleRommsBtns);
+
+        GUILayout.FlexibleSpace();
+
+        EditorGUILayout.EndHorizontal();
+
+        GUILayout.Space(5f);
+
+        if (GUILayout.Button("1 Door")) 
+        {
+            ScanFolders();
+        }
+        
+        if (GUILayout.Button("2 Doors")) 
+        {
+            ScanFolders();
+        }
+
+        if (GUILayout.Button("3 Doors")) 
+        {
+            ScanFolders();
+        }
 
     }
-    void OnScenGUI(SceneView sceneView)
+    void OnSnapArea(SceneView sceneView)
     {
         if (!visibleArea) return;
+        
+        GUIStyle btnStyle = new()
+        {
+            fixedHeight = 80,
+            fixedWidth = 140
+        };
+
         Event e = Event.current;
         Ray ray = HandleUtility.GUIPointToWorldRay(e.mousePosition);
         RaycastHit hit;
@@ -95,6 +183,51 @@ public class HomeBuilderWindow : EditorWindow
         {
             Handles.color = Color.green;
             Handles.DrawWireDisc(hit.point, hit.normal, areaSize);
+
+            if (selPrefab == null || previewMesh == null) return;
+            previewPos = hit.point;
+            Matrix4x4 matrix = Matrix4x4.TRS(previewPos, Quaternion.identity, previewScale);
+            
+            for (int i = 0; i < previewMat.Length; i++)
+            {
+                Graphics.DrawMesh(previewMesh, matrix, previewMat[i], 0, sceneView.camera, i);
+            }
         }
+        if(e.type == EventType.MouseDown && e.button == 0)
+        {
+            ContainerCheck();
+            GameObject gObjSpawned = PrefabUtility.InstantiatePrefab(selPrefab, container.transform) as GameObject;
+            gObjSpawned.transform.position = previewPos;
+
+            Undo.RegisterCreatedObjectUndo(gObjSpawned, "Spawn Prefab");
+            e.Use();
+        }
+        sceneView.Repaint();
     }
+    static void ContainerCheck()
+    {
+        if (container != null) container = GameObject.Find("Generated Props");
+        else container = new("Generated Props");
+    }
+    void OnRoomsSelection(SceneView sceneView)
+    {
+        //foreach ()
+        //if (GUILayout.Button("Room A")) SelectedPrefab();
+        //if (GUILayout.Button("Room B")) SelectedPrefab();
+        //if (GUILayout.Button("Room C")) SelectedPrefab();
+    }
+    static void SelectedPrefab(GameObject prefab, string name)
+    {
+        selPrefab = prefab;
+        selName = name;
+        var meshFilters = prefab.GetComponentInChildren<MeshFilter>();
+        var meshRenderers = prefab.GetComponentInChildren<MeshRenderer>();
+
+        if(meshFilters != null && meshRenderers != null)
+        {
+            previewMesh = meshFilters.sharedMesh;
+            previewMat = meshRenderers.sharedMaterials;
+            previewScale = prefab.transform.localScale;
+        }
+    }    
 }
