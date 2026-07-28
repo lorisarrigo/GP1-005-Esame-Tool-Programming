@@ -27,8 +27,9 @@ public class HomeBuilderWindow : EditorWindow
             fontSize = 18,
             normal = { textColor = Color.white },
             fontStyle = FontStyle.Bold,
-            alignment =TextAnchor.MiddleCenter
+            alignment = TextAnchor.MiddleCenter
         };
+
         GUILayout.Label("Home Builder", titleStyle);
 
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
