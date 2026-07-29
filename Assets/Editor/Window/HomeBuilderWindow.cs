@@ -155,6 +155,12 @@ public class HomeBuilderWindow : EditorWindow
                 if (category.prefabAsset.Length > 0) SelectedPrefab(category.prefabAsset[0]);
             }
         }
+
+        GUILayout.Label("", GUI.skin.horizontalSlider);
+
+        GUILayout.Space(5f);
+        
+        GUILayout.Label("Scorciatoie\nShift+Q: Ruota prefab senso antiorario\nShift+E: Ruota prefab senso orario\nCtrl+Z: toglie l'ultima stanza inserita", subTitle);
     }
 
     void OnSceneGUI(SceneView sceneView)
