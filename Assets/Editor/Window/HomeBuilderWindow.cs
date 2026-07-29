@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI.Table;
 public class HomeBuilderWindow : EditorWindow
 {
     [MenuItem("Tools/Home Builder")]
@@ -210,6 +211,19 @@ public class HomeBuilderWindow : EditorWindow
     void InputAndPreview(SceneView sceneView)
     {
         Event e = Event.current;
+        if (e.type == EventType.KeyDown && e.shift)
+        {
+            if (e.keyCode == KeyCode.Q)
+            {
+                curRotY -= 90;
+                e.Use();
+            }
+            else if (e.keyCode == KeyCode.E)
+            {
+                curRotY += 90;
+                e.Use();
+            }
+        }
         Ray ray = HandleUtility.GUIPointToWorldRay(e.mousePosition);
         Plane ground = new(Vector3.up, Vector3.zero);
         if (ground.Raycast(ray, out float distance))
@@ -224,6 +238,7 @@ public class HomeBuilderWindow : EditorWindow
             if (selPrefab != null && roomParts.Count > 0)
             {
                 HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive));
+                
                 Matrix4x4 matrix = Matrix4x4.TRS(previewPos, rot, selPrefab.transform.localScale);
                 foreach (var piece in roomParts)
                 {
@@ -235,6 +250,7 @@ public class HomeBuilderWindow : EditorWindow
                     }
                 }
             }
+            
             if (e.type == EventType.MouseDown && e.button == 0)
             {
                 ContainerCheck();
