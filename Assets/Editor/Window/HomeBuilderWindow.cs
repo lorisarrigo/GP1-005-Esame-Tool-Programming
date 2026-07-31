@@ -265,11 +265,11 @@ public class HomeBuilderWindow : EditorWindow
                 gObjSpawned.transform.SetPositionAndRotation(previewPos, previewRot);
 
                 Undo.RegisterCreatedObjectUndo(gObjSpawned, "Spawn Prefab");
-                spawnedRooms.Add(gObjSpawned);
+
                 UpdateDoorsStatus(gObjSpawned); //aggiorna lo stato delle Porte da libere ad occupate
+                spawnedRooms.Add(gObjSpawned);
                 e.Use();
             }
-
         }
         sceneView.Repaint();
     }
@@ -363,9 +363,8 @@ public class HomeBuilderWindow : EditorWindow
                     if (newDoor.doorCollider == null) continue;
                     if (Vector3.Distance(newDoor.doorCollider.transform.position, targetDoor.doorCollider.transform.position) < 0.05f)
                     {
-
-                        Undo.RecordObject(exRoom, "Update Doors");
-                        Undo.RecordObject(newRooms, "Update Doors");
+                        Undo.RecordObject(exRoom, "Update Old Doors");
+                        Undo.RecordObject(newRooms, "Update New Doors");
                         targetDoor.isUsed = true;
                         newDoor.isUsed = true;
                     }
