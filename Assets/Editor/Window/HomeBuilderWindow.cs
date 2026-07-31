@@ -266,7 +266,7 @@ public class HomeBuilderWindow : EditorWindow
 
                 Undo.RegisterCreatedObjectUndo(gObjSpawned, "Spawn Prefab");
                 spawnedRooms.Add(gObjSpawned);
-                UpdateDoorsStatus(gObjSpawned);
+                UpdateDoorsStatus(gObjSpawned); //aggiorna lo stato delle Porte da libere ad occupate
                 e.Use();
             }
 
