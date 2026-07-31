@@ -7,24 +7,11 @@ public class DoorsData
     public Collider doorCollider;
     public bool isUsed = false;
 }
-
+//Questa clsse tiene conto delle Porte e ne colora il collider se il posizionamento è disponibile 
 public class RoomController : MonoBehaviour
 {
     public List<DoorsData> doors = new();
-    public int GetDoorCount()
-    {
-        return doors.Count;
-    }
 
-    public List<DoorsData> GetUnusedDoors()
-    {
-        List<DoorsData> unusedDoors = new();
-        foreach (var door in doors)
-        {
-            if (!door.isUsed) unusedDoors.Add(door);
-        }
-        return unusedDoors;
-    }
     private void OnDrawGizmos()
     {
         if (doors == null) return;
