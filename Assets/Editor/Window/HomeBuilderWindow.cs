@@ -375,8 +375,9 @@ public class HomeBuilderWindow : EditorWindow
     }
     static void ContainerCheck()
     {
-        if (container != null) container = GameObject.Find("Generated Props");
-        else container = new GameObject("Generated Props");
+        if (container == null) container = new GameObject("Generated Props");
+        
+        else container = GameObject.Find("Generated Props");
     }
     static void SelectedPrefab(GameObject prefab)
     {
