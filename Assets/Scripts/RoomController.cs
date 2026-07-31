@@ -11,7 +11,6 @@ public class DoorsData
 public class RoomController : MonoBehaviour
 {
     public List<DoorsData> doors = new();
-
     private void OnDrawGizmos()
     {
         if (doors == null) return;

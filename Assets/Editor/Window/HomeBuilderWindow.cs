@@ -86,7 +86,7 @@ public class HomeBuilderWindow : EditorWindow
             }
             categories.Add(category);
         }
-        if (categories.Count > 0)
+        if (categories.Count > 0) //seleziona il primo prefab di default
         {
             selectedCategory = categories[0];
             SelectedPrefab(selectedCategory.prefabAsset[0]);
@@ -198,7 +198,7 @@ public class HomeBuilderWindow : EditorWindow
                 else content = new GUIContent(selectedCategory.prefabName[i]);
                 if (GUILayout.Button(content, GUILayout.Width(tumbSize), GUILayout.Height(tumbSize))) //creo tanti bottoni quanti prefab nella categoria creata
                 {
-                    SelectedPrefab(prefab); //crea la preview Disegnata in scena della stanza selezionata
+                    SelectedPrefab(prefab); //seleziona la preview da disegnare
                 }
             }
         }
@@ -310,13 +310,13 @@ public class HomeBuilderWindow : EditorWindow
                     //in modo da poterla snappare con più precisione (prende in considerazione il raggio dell'auto-snap, la distanza minima e l'allineamento tra le 2 porte)
                     if (dist <= areaSize && dist < closestDist && Vector3.Dot(currentPreviewDoorForward, targetDoor.doorCollider.transform.forward) < -0.7f)
                     {
-                        Quaternion desiredDoorRot = Quaternion.LookRotation(-targetDoor.doorCollider.transform.forward, Vector3.up); 
-                        Quaternion desiredRootRot = desiredDoorRot * Quaternion.Inverse(localDoorRot);
-                        Vector3 desiredRootPos = targetDoor.doorCollider.transform.position - (desiredRootRot * localDoorPos);
+                        Quaternion targetDoorRot = Quaternion.LookRotation(-targetDoor.doorCollider.transform.forward, Vector3.up); 
+                        Quaternion selDootRot = targetDoorRot * Quaternion.Inverse(localDoorRot);
+                        Vector3 targetDootPos = targetDoor.doorCollider.transform.position - (selDootRot * localDoorPos);
 
                         closestDist = dist;
-                        finalPos = desiredRootPos;
-                        finalRot = desiredRootRot;
+                        finalPos = targetDootPos;
+                        finalRot = selDootRot;
                         foundSnap = true;
                     }
                 }

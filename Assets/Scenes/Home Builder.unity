@@ -480,6 +480,58 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5565040974091276747, guid: 4a7619fffd4206f4b892b5c611886e4c, type: 3}
+      propertyPath: numbers.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5565040974091276747, guid: 4a7619fffd4206f4b892b5c611886e4c, type: 3}
+      propertyPath: 'numbers.Array.data[0]'
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5565040974091276747, guid: 4a7619fffd4206f4b892b5c611886e4c, type: 3}
+      propertyPath: 'numbers.Array.data[1]'
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 5565040974091276747, guid: 4a7619fffd4206f4b892b5c611886e4c, type: 3}
+      propertyPath: 'numbers.Array.data[2]'
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 5565040974091276747, guid: 4a7619fffd4206f4b892b5c611886e4c, type: 3}
+      propertyPath: 'numbers.Array.data[3]'
+      value: 69
+      objectReference: {fileID: 0}
+    - target: {fileID: 5565040974091276747, guid: 4a7619fffd4206f4b892b5c611886e4c, type: 3}
+      propertyPath: 'numbers.Array.data[4]'
+      value: 99
+      objectReference: {fileID: 0}
+    - target: {fileID: 5565040974091276747, guid: 4a7619fffd4206f4b892b5c611886e4c, type: 3}
+      propertyPath: 'numbers.Array.data[5]'
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5565040974091276747, guid: 4a7619fffd4206f4b892b5c611886e4c, type: 3}
+      propertyPath: 'numbers.Array.data[6]'
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5565040974091276747, guid: 4a7619fffd4206f4b892b5c611886e4c, type: 3}
+      propertyPath: 'numbers.Array.data[7]'
+      value: 444
+      objectReference: {fileID: 0}
+    - target: {fileID: 5565040974091276747, guid: 4a7619fffd4206f4b892b5c611886e4c, type: 3}
+      propertyPath: 'numbers.Array.data[8]'
+      value: 9999
+      objectReference: {fileID: 0}
+    - target: {fileID: 5565040974091276747, guid: 4a7619fffd4206f4b892b5c611886e4c, type: 3}
+      propertyPath: 'numbers.Array.data[9]'
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5565040974091276747, guid: 4a7619fffd4206f4b892b5c611886e4c, type: 3}
+      propertyPath: doors.Array.data[0].isUsed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5565040974091276747, guid: 4a7619fffd4206f4b892b5c611886e4c, type: 3}
+      propertyPath: doors.Array.data[0].doorCollider
+      value: 
+      objectReference: {fileID: 971277582}
     - target: {fileID: 6574995880189063052, guid: 4a7619fffd4206f4b892b5c611886e4c, type: 3}
       propertyPath: m_Name
       value: Room 1 door A
@@ -489,6 +541,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a7619fffd4206f4b892b5c611886e4c, type: 3}
+--- !u!65 &971277582 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 5999090959322330979, guid: 4a7619fffd4206f4b892b5c611886e4c, type: 3}
+  m_PrefabInstance: {fileID: 971277581}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1821682257
 GameObject:
   m_ObjectHideFlags: 0
